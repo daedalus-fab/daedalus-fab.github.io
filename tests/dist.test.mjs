@@ -13,6 +13,7 @@ test('dist/index.html exists', () => {
 });
 
 const html = existsSync(indexPath) ? readFileSync(indexPath, 'utf8') : '';
+const pkg = JSON.parse(readFileSync(path.join(distDir, '..', 'package.json'), 'utf8'));
 
 test('has a <title>', () => {
   assert.match(html, /<title>[^<]+<\/title>/, 'expected a non-empty <title> element');
@@ -50,4 +51,16 @@ test('includes compiled styling', () => {
     /<style[\s>]|<link[^>]+rel="stylesheet"/,
     'expected an inline style block or an emitted stylesheet asset',
   );
+});
+
+test('imports the integrity-pinned ORES Chat component only from the footer', () => {
+  const footer = html.match(/<footer[\s\S]*?<\/footer>/i)?.[0] ?? '';
+  const beforeFooter = html.slice(0, html.indexOf('<footer'));
+
+  assert.match(footer, /<ores-chat-footer-link context-id="daedalus-fab">/);
+  assert.match(footer, /https:\/\/ores-chat\.github\.io\/chat\/\?context=daedalus-fab/);
+  assert.doesNotMatch(beforeFooter, /<ores-chat-footer-link/);
+  assert.match(html, /src="https:\/\/ores-chat\.github\.io\/components\/v1\/ores-chat-footer-link\.js"/);
+  assert.match(html, /integrity="sha256-jtetSlJDWLAWg2\+zQIZGUX71OYlIKkZ9sbPnFMup5SE="/);
+  assert.doesNotMatch(JSON.stringify(pkg.dependencies), /react/i);
 });
