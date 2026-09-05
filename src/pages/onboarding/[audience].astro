@@ -1,0 +1,44 @@
+---
+export function getStaticPaths() {
+  return ["individual", "organization"].map((audience) => ({ params: { audience } }));
+}
+const team = Astro.params.audience === "organization";
+const title = team ? "Build together." : "Make your next idea real.";
+const host = team ? "org.daedalus.pro" : "user.daedalus.pro";
+const steps = team
+  ? [["Create your workspace", "Give your organization a home for designs, machines, and fabrication plans."], ["Invite your people", "Each employee uses their own account. Owners manage membership and access."], ["Review and release", "Keep approvals, fabrication history, and supplier work together."]]
+  : [["Start with one project", "Bring a design or an idea. A personal workspace keeps your work in one place."], ["Choose your route", "Compare a fabrication plan with available processes and materials."], ["Keep the result", "Return for another part, review progress, or retrieve your project history."]];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={team ? "Get started with a Daedalus organization workspace." : "Get started with a personal Daedalus fabrication workspace."} />
+    <title>{team ? "Organization" : "Individual"} access · Daedalus</title>
+  </head>
+  <body>
+    <a class="skip" href="#start">Skip to account options</a>
+    <header><a class="brand" href="/">D<span>Daedalus</span></a><a href="/#platform">Explore the platform ↗</a></header>
+    <main id="start">
+      <section class="intro">
+        <p class="eyebrow">{team ? "For teams & organizations" : "For individuals & one-time projects"}</p>
+        <h1>{title}</h1>
+        <p class="lede">{team ? "One shared workspace. An individual account for every person." : "A workspace for your project, from the first idea to the finished part."}</p>
+        <nav aria-label="Choose account type"><a href="/onboarding/individual/" aria-current={!team ? "page" : undefined}>Individual</a><a href="/onboarding/organization/" aria-current={team ? "page" : undefined}>Organization</a></nav>
+        <ol>{steps.map(([heading, text], i) => <li><span>{String(i + 1).padStart(2, "0")}</span><div><h2>{heading}</h2><p>{text}</p></div></li>)}</ol>
+      </section>
+      <aside aria-labelledby="account-title">
+        <span class="tag">{team ? "TEAM WORKSPACE" : "PERSONAL WORKSPACE"}</span>
+        <h2 id="account-title">{team ? "Your team starts here." : "Start with your account."}</h2>
+        <p>{team ? "Sign in to your organization account. If you are joining an existing team, use your invitation so you enter the right workspace." : "Sign in or create your account to keep your project and progress together."}</p>
+        <a class="primary" href={`https://${host}/sign-in`}>{team ? "Organization sign in" : "Individual sign in"} <span aria-hidden="true">↗</span></a>
+        <p class="availability">Account applications are being prepared for daedalus.pro. Access is available after the new domain and customer onboarding service are enabled.</p>
+        <div class="support"><h3>{team ? "Planning a team rollout?" : "Need help with a first project?"}</h3><p>Talk through your fabrication needs with us.</p><a href="https://ores-chat.github.io/chat/?context=daedalus-fab" rel="noopener noreferrer">Talk to Daedalus ↗</a></div>
+      </aside>
+    </main>
+    <footer><span>© 2026 Daedalus</span><a href="/">Back to the platform</a></footer>
+  </body>
+</html>
+<style>
+  :global(*){box-sizing:border-box}:global(body){margin:0;background:#f5f7fa;color:#111827;font:16px/1.6 system-ui,sans-serif}:global(a){color:inherit}:global(a:focus-visible){outline:3px solid #b45309;outline-offset:5px}header,main,footer{max-width:1180px;margin:auto;padding:2rem}.skip{position:absolute;left:1rem;top:-5rem;background:white;padding:1rem;z-index:10}.skip:focus{top:1rem}header,footer{display:flex;justify-content:space-between;align-items:center}header a,footer a{text-decoration:none}.brand{font-size:1.5rem;font-weight:900;display:flex;gap:.8rem;align-items:center}.brand span{font-size:1rem}main{display:grid;grid-template-columns:1.2fr 1fr;gap:6rem;align-items:start;padding-block:4rem 6rem}.eyebrow,.tag{font:750 .8rem/1.5 ui-monospace,monospace;text-transform:uppercase;letter-spacing:.12em;color:#9a4408}h1{font-size:clamp(3.2rem,6vw,5.5rem);line-height:1;letter-spacing:-.055em;max-width:10ch;margin:1rem 0 1.5rem}.lede{font-size:1.25rem;max-width:32ch;color:#4b5563}nav{display:flex;padding:.35rem;background:#e5e9ef;border-radius:.75rem;margin:2rem 0;width:fit-content}nav a{padding:.6rem 1.1rem;text-decoration:none;font-weight:650;border-radius:.5rem}nav a[aria-current]{background:white;box-shadow:0 2px 5px #11182715}ol{list-style:none;padding:0}li{display:flex;gap:1.2rem;padding:1.25rem 0;border-bottom:1px solid #dce1e8}li>span{font:600 .9rem/2 ui-monospace,monospace;color:#9a4408}li h2{font-size:1.05rem;margin:0}li p{margin:.3rem 0;color:#4b5563}aside{background:#111827;color:#f9fafb;border-radius:1.25rem;padding:2.5rem;margin-top:2rem;box-shadow:0 20px 50px #11182718}aside .tag{color:#fdba74}aside h2{font-size:2rem;line-height:1.15;letter-spacing:-.025em}aside p{color:#cbd5e1}.primary{display:flex;justify-content:space-between;padding:1rem 1.2rem;background:#fb923c;border-radius:.6rem;color:#111827;text-decoration:none;font-weight:750;margin-top:2rem}.availability{font-size:.875rem}.support{border-top:1px solid #374151;margin-top:2rem;padding-top:1rem}.support h3{font-size:1rem}.support a{color:#fdba74;text-underline-offset:.25rem}footer{font-size:.875rem;color:#4b5563;border-top:1px solid #dce1e8}@media(max-width:850px){main{gap:2rem;grid-template-columns:1fr;padding-top:1rem}h1{max-width:15ch}aside{margin-top:0}header,main,footer{padding-inline:1.25rem}}@media(prefers-reduced-motion:reduce){:global(html){scroll-behavior:auto}}
+</style>
