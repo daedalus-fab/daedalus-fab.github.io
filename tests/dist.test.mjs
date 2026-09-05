@@ -64,6 +64,6 @@ test('imports the integrity-pinned ORES Chat component only from the footer', ()
   assert.match(footer, /https:\/\/ores-chat\.github\.io\/chat\/\?context=daedalus-fab/);
   assert.doesNotMatch(beforeFooter, /<ores-chat-footer-link/);
   assert.match(html, /src="https:\/\/ores-chat\.github\.io\/components\/v1\/ores-chat-footer-link\.js"/);
-  assert.match(html, /integrity="sha256-jtetSlJDWLAWg2\+zQIZGUX71OYlIKkZ9sbPnFMup5SE="/);
+  assert.match(html, /integrity="sha256-PcjdZ659Rfs\/5n5kNR3v\/GK4dd0KTyHjh0gY7o\/Z\/kc="/);
   assert.doesNotMatch(JSON.stringify(pkg.dependencies), /react/i);
 });
