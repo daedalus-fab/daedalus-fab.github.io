@@ -1,0 +1,78 @@
+---
+const processes = [
+  {
+    name: "Additive",
+    summary: "Build material in layers from a digital model.",
+    consider: "Geometry complexity, material selection, orientation, support strategy, and post-processing.",
+    verify: "Material and machine compatibility, minimum features, build constraints, and inspection.",
+  },
+  {
+    name: "Subtractive",
+    summary: "Remove material from a stock blank with controlled tooling.",
+    consider: "Stock size, access, fixturing, tooling reach, tolerances, and waste.",
+    verify: "Machine envelope, toolpaths, tool clearance, workholding, and inspection.",
+  },
+  {
+    name: "Hybrid",
+    summary: "Combine additive and subtractive operations as a coordinated route.",
+    consider: "Process sequence, datum transfer, intermediate stock, and handling between machines.",
+    verify: "Each machine's release gates, transfer state, toolpaths, and traceable transitions.",
+  },
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Compare additive, subtractive and hybrid manufacturing routes, including the evidence needed before release." />
+    <title>Choose a fabrication process — Daedalus</title>
+  </head>
+  <body>
+    <header>
+      <a href="/" aria-label="Daedalus home">Daedalus</a>
+      <nav aria-label="Page navigation"><a href="/">Platform</a><a href="/onboarding/individual/">Get started</a></nav>
+    </header>
+    <main>
+      <p class="eyebrow">Fabrication process guide</p>
+      <h1>Choose a route before releasing instructions.</h1>
+      <p class="intro">A process family is a planning decision, not permission to operate a machine. Compare the route, prerequisites and preflight evidence before requesting a release.</p>
+      <div class="cards">
+        {processes.map((process) => (
+          <article>
+            <h2>{process.name}</h2>
+            <p>{process.summary}</p>
+            <h3>Planning considerations</h3>
+            <p>{process.consider}</p>
+            <h3>Preflight evidence</h3>
+            <p>{process.verify}</p>
+          </article>
+        ))}
+      </div>
+      <section class="gate">
+        <h2>Release remains a separate gate</h2>
+        <p>All routes require an authorized operator decision, a compatible machine profile and the configured safety checks. A generated plan is never automatically machine-ready.</p>
+        <a href="https://github.com/daedalus-fab/daedalus-clients">Explore the plan API clients</a>
+      </section>
+    </main>
+    <footer><a href="/">Back to Daedalus</a></footer>
+  </body>
+</html>
+<style>
+  :global(html) { color-scheme: dark; }
+  :global(body) { margin: 0; background: #111827; color: #f9fafb; font: 16px/1.55 system-ui, sans-serif; }
+  :global(a) { color: #93c5fd; }
+  header, footer { padding: 1.1rem max(1.5rem, calc((100vw - 70rem) / 2)); display: flex; justify-content: space-between; gap: 1rem; }
+  header nav { display: flex; flex-wrap: wrap; gap: 1rem; }
+  main { max-width: 70rem; padding: 3rem 1.5rem 5rem; margin: auto; }
+  h1 { max-width: 48rem; font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.15; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1rem; margin-bottom: 0; }
+  .eyebrow { text-transform: uppercase; letter-spacing: .12em; color: #93c5fd; }
+  .intro { max-width: 49rem; color: #d1d5db; font-size: 1.15rem; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: 1rem; margin-top: 2.5rem; }
+  article, .gate { background: #1f2937; border: 1px solid #374151; border-radius: .9rem; padding: 1.5rem; }
+  article p { color: #d1d5db; }
+  .gate { margin-top: 2rem; }
+  .gate p { max-width: 47rem; }
+</style>
