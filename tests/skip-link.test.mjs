@@ -12,3 +12,10 @@ test("homepage has an early keyboard skip link with a unique, focusable main tar
   assert.match(source, /<main id="main-content" tabindex="-1">/);
   assert.match(source, /\.skip-to-content:focus-visible\{[^}]*transform:translateY\(0\)/);
 });
+
+test("built Astro homepage keeps the keyboard skip link and its target", async () => {
+  const html = await readFile(new URL("../dist/index.html", import.meta.url), "utf8");
+  assert.match(html, /href="#main-content"[^>]*>Skip to main content<\/a>/);
+  assert.equal((html.match(/id="main-content"/g) ?? []).length, 1);
+  assert.match(html, /<main\b[^>]*id="main-content"[^>]*tabindex="-1"/);
+});
